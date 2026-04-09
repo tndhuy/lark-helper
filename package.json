@@ -1,0 +1,40 @@
+{
+  "name": "lark-helper",
+  "version": "1.0.0",
+  "description": "A specialized skill for **Gemini CLI** and **Antigravity** designed to streamline your documentation workflow by synchronizing local Markdown files directly to **Lark (Feishu) Wiki**.",
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "lark-mcp": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w",
+    "start": "node dist/index.js",
+    "setup": "npm run build && node scripts/setup-mcp.js",
+    "test": "vitest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tndhuy/lark-helper.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tndhuy/lark-helper/issues"
+  },
+  "homepage": "https://github.com/tndhuy/lark-helper#readme",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.29.0",
+    "better-sqlite3": "^12.8.0",
+    "execa": "^9.6.1",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.13",
+    "@types/node": "^25.5.2",
+    "typescript": "^6.0.2",
+    "vitest": "^4.1.3"
+  }
+}

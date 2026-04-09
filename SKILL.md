@@ -1,37 +1,46 @@
----
-name: lark-helper
-description: Cooperate with lark-cli to manage Lark/Feishu resources, specifically for synchronizing project documentation to Wiki. Use when the user needs to sync local Markdown files, manage Wiki nodes, or interact with Lark APIs.
----
+# Skill: lark-helper
 
-# Lark Helper Skill
+A professional AI-native toolkit for managing and processing Lark (Feishu) data. Designed for context efficiency with built-in sandboxed execution and high-performance indexing.
 
-This skill provides specialized workflows for using the `lark-cli` to synchronize local project documentation with Lark Wiki.
+## Triggers
 
-## Prerequisites
-- `lark-cli` must be installed and configured.
-- User/Bot must have **Admin** or **Editor** permission on the target Wiki Space.
+- "Search Lark Wiki/Docs for X"
+- "Analyze this large sheet from Lark"
+- "Process Lark documentation"
+- "Index Lark knowledge base"
+- "Run a script on Lark data"
 
-## Project Documentation Sync
+## Tools Overview
 
-### Happyland Project Structure
-Follow this standard hierarchy under the `[Internal Docs Sync]` node:
-- `Project Name`
-  - `Overview` (README.md)
-  - `Engineering & Architecture` (.planning/codebase/*.md)
-  - `Technical Specification` (docs/*.md)
+| Tool | Purpose | Context Mode |
+|------|---------|--------------|
+| `lark_execute` | Runs a Node.js script in a sandbox to process Lark data. | **Primary** (for large datasets) |
+| `lark_search` | Performs fast full-text search across indexed Lark content. | **Knowledge Base** |
+| `lark_index_wiki` | Recursively indexes a Lark Wiki space into a local SQLite database. | **Maintenance** |
+| `auth_login` | Authenticates the `lark-cli` with your account. | **Setup** |
+| `docs_show` | Retrieves the content of a specific Lark document. | **Retrieval** |
 
-### Key Commands
-- **List Spaces**: `lark-cli wiki spaces list --as user`
-- **List Nodes**: `lark-cli wiki nodes list --as user --params '{"space_id": "<SPACE_ID>"}'`
-- **Create Document/Wiki Node**:
-  ```bash
-  lark-cli docs +create --title "<TITLE>" --markdown "$(cat <FILE_PATH>)" --wiki-node <PARENT_NODE_TOKEN> --as user
-  ```
+## Best Practices (Thinking in Code)
 
-## Advanced Usage
-- **Search**: `lark-cli docs +search --query "<KEYWORD>" --as user`
-- **Raw API**: Use `lark-cli api <METHOD> <PATH>` for direct access to Lark Open Platform.
+1. **Efficiency First**: When a tool returns a `@file:` pointer, do not try to read it. Always use `lark_execute`.
+2. **Local Processing**: Prefer writing a small script to filter data locally rather than fetching thousands of rows into the chat context.
+3. **Knowledge First**: Use `lark_search` to find relevant documents before requesting their full content.
 
-## Error Handling
-- **131006 (Permission Denied)**: Verify that the user token used has collaborator access to the specific Space/Node.
-- **Link Warnings**: Local relative links (`./docs/`) in Markdown will not work on Lark Wiki and will be displayed as plain text.
+## Example Workflow: Analyzing a Large Wiki Space
+
+1. **Discovery**: `lark_index_wiki({ spaceId: "ABC" })` to build the local index.
+2. **Search**: `lark_search({ query: "Project Roadmap" })` to find relevant nodes.
+3. **Analysis**: If a node's content is too large, use `lark_execute` to extract key milestones.
+
+```javascript
+// Example lark_execute script
+const fs = require('fs');
+const data = JSON.parse(fs.readFileSync('~/.lark-helper/cache/node_content.json', 'utf8'));
+const milestones = data.content.filter(line => line.includes('Milestone'));
+console.log(JSON.stringify(milestones, null, 2));
+```
+
+## Security
+
+- All scripts run via `lark_execute` are sandboxed.
+- No user credentials are logged or shared.
