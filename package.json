@@ -1,11 +1,14 @@
 {
-  "name": "lark-helper",
+  "name": "@tndhuy/lark-helper",
   "version": "1.0.0",
-  "description": "A specialized skill for **Gemini CLI** and **Antigravity** designed to streamline your documentation workflow by synchronizing local Markdown files directly to **Lark (Feishu) Wiki**.",
+  "description": "A specialized MCP wrapper for lark-cli, allowing Agents to interact with Lark (Feishu) via OAuth identity.",
   "type": "module",
   "main": "dist/index.js",
   "bin": {
-    "lark-mcp": "./dist/index.js"
+    "lark-helper": "./dist/index.js"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
   },
   "scripts": {
     "build": "tsc",
